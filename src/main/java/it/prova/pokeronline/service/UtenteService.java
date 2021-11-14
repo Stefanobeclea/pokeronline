@@ -30,8 +30,6 @@ public interface UtenteService {
 	
 	public void reset(Utente utenteInstance);
 	
-	public void resettaUtente(Utente utenteInstance);
+	public void resettaUtente(String nuovaPassword, String confermaPassword, String vecchiaPassword, Utente utenteInstance);
 	
-	public boolean confrontaPassCodificataConDecodificata(String passwordCodificata, String passwordDecodificata);
-
 }

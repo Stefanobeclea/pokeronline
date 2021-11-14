@@ -108,17 +108,19 @@ public class UtenteServiceImpl implements UtenteService {
 
 	@Override
 	@Transactional
-	public void resettaUtente(Utente utenteInstance) {
+	public void resettaUtente(String nuovaPassword, String confermaPassword, String vecchiaPassword,  Utente utenteInstance) {
 		Utente utenteReloaded = repository.findById(utenteInstance.getId()).orElse(null);
 		if(utenteReloaded == null)
 			throw new RuntimeException("Elemento non trovato");
-		utenteReloaded.setPassword(utenteInstance.getPassword());
+		
+		if(!passwordEncoder.matches(vecchiaPassword, utenteInstance.getPassword()))
+			throw new RuntimeException("Ultima password non corrispondente");
+			
+		if(!nuovaPassword.equals(confermaPassword))
+			throw new RuntimeException("Le password non coincidono");
+		
+		utenteReloaded.setPassword(passwordEncoder.encode(nuovaPassword));
 		repository.save(utenteReloaded);
 		
-	}
-
-	@Override
-	public boolean confrontaPassCodificataConDecodificata(String passwordCodificata, String passwordDecodificata) {
-		return passwordEncoder.matches(passwordDecodificata, passwordCodificata);
 	}
 }

@@ -5,6 +5,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -135,6 +137,39 @@ public class UtenteController {
 		Utente utenteDaResettare = utenteService.caricaSingoloUtente(idUtente);
 		utenteService.reset(utenteDaResettare);
 		return "redirect:/utente";
+	}
+	
+	@GetMapping("/formreset")
+	public String formreset(Model model ) {
+		model.addAttribute("insert_utente_attr", new UtenteDTO());
+		return "utente/formreset";
+	}
+	
+	@PostMapping("/resetpw")
+	public String resetpw(Model model, RedirectAttributes redirectAttrs, HttpServletRequest request) {
+ 
+		//PER OTTENERE L'OGGETTO PRINCIPAL
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			
+		//PER OTTENERE L'USERNAME
+		String username = "";
+		username = ((UserDetails)principal).getUsername();	
+		
+		//CARICO L'UTENTE IN SESSIONE PER CONFRONTARE LE DUE PASSWORD, QUELLA IN DB CON QUELLA CHE RICEVO DAL CLIENT
+		Utente utenteInSessione = utenteService.findByUsername(username);
+//		if(!utenteService.confrontaPassCodificataConDecodificata(utenteInSessione.getPassword(), request.getParameter("vecchiaPassword"))) {
+//			model.addAttribute("errorMessage", "vecchiaPassword.notfound");
+//			return "utente/formreset";
+//		}
+//		if (!request.getParameter("password").equals(request.getParameter("confermaPassword"))) {
+//			model.addAttribute("errorMessage", "password.diverse");
+//			return "utente/formreset";
+//		}
+		
+		utenteService.resettaUtente(request.getParameter("password"),request.getParameter("confermaPassword"),request.getParameter("vecchiaPassword"), utenteInSessione);
+		
+		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
+		return "redirect:/logout";
 	}
 	
 

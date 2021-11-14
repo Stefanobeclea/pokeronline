@@ -38,11 +38,14 @@
         </ul>
       </div>
      <sec:authorize access="isAuthenticated()">
-	      <div class="col-md-3 text-end">
-	        <p class="navbar-text">Utente: <sec:authentication property="name"/> (${userInfo.nome } ${userInfo.cognome })
-	    	 <a href="${pageContext.request.contextPath}/logout">Logout</a></p>
-	      </div>
-      </sec:authorize>
+      		<div class="nav-item dropdown">
+		        <a class="nav-link dropdown-toggle" style="color: white!important" href="#" id="dropdown07" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><sec:authentication property="name"/> (${userInfo.nome } ${userInfo.cognome })</a>
+		        <div class="dropdown-menu" aria-labelledby="dropdown07">
+		          <a class="dropdown-item" href="${pageContext.request.contextPath}/utente/formreset">Resetta Password</a>
+		          <a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Logout</a>
+		        </div>
+		      </div>
+	 </sec:authorize>
     </div>
   </nav>
 
