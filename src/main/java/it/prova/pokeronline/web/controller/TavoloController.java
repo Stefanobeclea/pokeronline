@@ -31,9 +31,10 @@ public class TavoloController {
 	private UtenteService utenteService;
 	
 	@GetMapping
-	public ModelAndView listAllUtenti() {
+	public ModelAndView listAllUtenti(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
-		List<Tavolo> tavoli = tavoloService.listAllElements();
+		Utente utenteInSessione = (Utente)request.getSession().getAttribute("userInfo");
+		List<Tavolo> tavoli = tavoloService.listAllElements(utenteInSessione.getId());
 		mv.addObject("tavolo_list_attribute", tavoli);
 		mv.setViewName("tavolo/list");
 		return mv;

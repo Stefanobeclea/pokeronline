@@ -19,6 +19,11 @@ public class TavoloServiceImpl implements TavoloService{
 	public List<Tavolo> listAllElements() {
 		return (List<Tavolo>) repository.findAll();
 	}
+	
+	@Transactional(readOnly = true)
+	public List<Tavolo> listAllElements(Long idUtente) {
+		return (List<Tavolo>) repository.findAllDiSingoloUtente(idUtente);
+	}
 
 	@Transactional(readOnly = true)
 	public Tavolo caricaSingoloElemento(Long id) {
@@ -46,6 +51,7 @@ public class TavoloServiceImpl implements TavoloService{
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Tavolo> findByExample(Tavolo example) {
 		
 		return repository.findByExample(example);
