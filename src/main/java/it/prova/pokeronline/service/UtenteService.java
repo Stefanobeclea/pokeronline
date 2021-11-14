@@ -32,4 +32,6 @@ public interface UtenteService {
 	
 	public void resettaUtente(String nuovaPassword, String confermaPassword, String vecchiaPassword, Utente utenteInstance);
 	
+	public void addCredito(Utente utenteInstance, int creditoDaAggiungere);
+	
 }

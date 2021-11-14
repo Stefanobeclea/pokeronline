@@ -123,4 +123,15 @@ public class UtenteServiceImpl implements UtenteService {
 		repository.save(utenteReloaded);
 		
 	}
+
+	@Override
+	@Transactional
+	public void addCredito(Utente utenteInstance, int creditoDaAggiungere) {
+		Utente utenteReloaded = repository.findById(utenteInstance.getId()).orElse(null);
+		if(utenteReloaded == null)
+			throw new RuntimeException("Elemento non trovato");
+		
+		utenteReloaded.setCreditoAccumulato(utenteInstance.getCreditoAccumulato() + creditoDaAggiungere);
+		repository.save(utenteReloaded);
+	}
 }
