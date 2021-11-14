@@ -42,7 +42,7 @@ public class TavoloDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public TavoloDTO(String denominazione,Date dateCreated,  int esperienzaMinima, int creditoMinimo, UtenteDTO utenteCreazione) {
+	public TavoloDTO(String denominazione,Date dateCreated,  Integer esperienzaMinima, Integer creditoMinimo, UtenteDTO utenteCreazione) {
 		super();
 		this.denominazione = denominazione;
 		this.dateCreated = dateCreated;
@@ -52,7 +52,7 @@ public class TavoloDTO {
 	}
 	
 
-	public TavoloDTO(Long id,String denominazione,int esperienzaMinima, int creditoMinimo) {
+	public TavoloDTO(Long id,String denominazione,Integer esperienzaMinima, Integer creditoMinimo) {
 		super();
 		this.id = id;
 		this.denominazione = denominazione;
@@ -84,19 +84,19 @@ public class TavoloDTO {
 		this.dateCreated = dateCreated;
 	}
 
-	public int getEsperienzaMinima() {
+	public Integer getEsperienzaMinima() {
 		return esperienzaMinima;
 	}
 
-	public void setEsperienzaMinima(int esperienzaMinima) {
+	public void setEsperienzaMinima(Integer esperienzaMinima) {
 		this.esperienzaMinima = esperienzaMinima;
 	}
 
-	public int getCreditoMinimo() {
+	public Integer getCreditoMinimo() {
 		return creditoMinimo;
 	}
 
-	public void setCreditoMinimo(int creditoMinimo) {
+	public void setCreditoMinimo(Integer creditoMinimo) {
 		this.creditoMinimo = creditoMinimo;
 	}
 
