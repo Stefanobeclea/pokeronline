@@ -124,5 +124,11 @@ public class UtenteController {
 		return "redirect:/utente";
 	}
 	
+	@GetMapping("/show/{idUtente}")
+	public String show(@PathVariable(required = true) Long idUtente, Model model) {
+		model.addAttribute("show_utente_attr", utenteService.caricaSingoloUtenteConRuoli(idUtente));
+		return "utente/show";
+	}
+	
 
 }
