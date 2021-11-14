@@ -8,12 +8,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -46,6 +49,13 @@ public class Utente {
 	@ManyToMany
 	@JoinTable(name = "utente_ruolo", joinColumns = @JoinColumn(name = "utente_id", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ruolo_id", referencedColumnName = "ID"))
 	private Set<Ruolo> ruoli = new HashSet<>(0);
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "utente")
+	private Set<Tavolo> tavoliCreati = new HashSet<>(0);
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "tavolo_id")
+	private Utente tavolo;
 
 	public Utente() {
 	}
@@ -90,6 +100,22 @@ public class Utente {
 		this.cognome = cognome;
 		this.dateCreated = dateCreated;
 		this.stato = stato;
+	}
+
+	public Set<Tavolo> getTavoliCreati() {
+		return tavoliCreati;
+	}
+
+	public void setTavoliCreati(Set<Tavolo> tavoliCreati) {
+		this.tavoliCreati = tavoliCreati;
+	}
+
+	public Utente getTavolo() {
+		return tavolo;
+	}
+
+	public void setTavolo(Utente tavolo) {
+		this.tavolo = tavolo;
 	}
 
 	public int getEsperienzaAccumulata() {

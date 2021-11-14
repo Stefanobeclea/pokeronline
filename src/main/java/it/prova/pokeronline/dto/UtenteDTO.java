@@ -7,11 +7,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import it.prova.pokeronline.model.Ruolo;
 import it.prova.pokeronline.model.StatoUtente;
+import it.prova.pokeronline.model.Tavolo;
 import it.prova.pokeronline.model.Utente;
 import it.prova.pokeronline.validation.ValidationNoPassword;
 import it.prova.pokeronline.validation.ValidationWithPassword;
@@ -50,6 +52,10 @@ public class UtenteDTO {
 
 	private Long[] ruoliIds;
 	private Set<RuoloDTO> ruoli = new HashSet<>(0);
+	
+	private Set<Tavolo> tavoliCreati = new HashSet<>(0);
+
+	private Utente tavolo;
 
 	public UtenteDTO() {
 	}
@@ -77,6 +83,22 @@ public class UtenteDTO {
 
 	public Long getId() {
 		return id;
+	}
+
+	public Set<Tavolo> getTavoliCreati() {
+		return tavoliCreati;
+	}
+
+	public void setTavoliCreati(Set<Tavolo> tavoliCreati) {
+		this.tavoliCreati = tavoliCreati;
+	}
+
+	public Utente getTavolo() {
+		return tavolo;
+	}
+
+	public void setTavolo(Utente tavolo) {
+		this.tavolo = tavolo;
 	}
 
 	public int getEsperienzaAccumulata() {
