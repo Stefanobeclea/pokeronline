@@ -130,5 +130,12 @@ public class UtenteController {
 		return "utente/show";
 	}
 	
+	@GetMapping("/reset/{idUtente}")
+	public String reset(@PathVariable(required = true)Long idUtente, Model model ) {
+		Utente utenteDaResettare = utenteService.caricaSingoloUtente(idUtente);
+		utenteService.reset(utenteDaResettare);
+		return "redirect:/utente";
+	}
+	
 
 }
