@@ -37,10 +37,6 @@ public class UtenteDTO {
 
 	@NotBlank(message = "{cognome.notblank}",groups = {ValidationWithPassword.class,ValidationNoPassword.class})
 	private String cognome;
-	
-	@NotBlank(message = "{vecchiaPassword.notblank}",groups = ValidationWithPassword.class)
-	@Size(min = 8, max = 15, message = "Il valore inserito deve essere lungo tra {min} e {max} caratteri")
-	private String vecchiaPassword;
 
 	private Date dateCreated;
 	
@@ -69,16 +65,6 @@ public class UtenteDTO {
 		this.cognome = cognome;
 		this.stato = stato;
 		this.ruoli = new HashSet<>(ruoliList);
-	}
-
-	public UtenteDTO(
-		 String password,
-			String confermaPassword,
-			 String vecchiaPassword) {
-		super();
-		this.password = password;
-		this.confermaPassword = confermaPassword;
-		this.vecchiaPassword = vecchiaPassword;
 	}
 
 	public Long getId() {
@@ -119,14 +105,6 @@ public class UtenteDTO {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getVecchiaPassword() {
-		return vecchiaPassword;
-	}
-
-	public void setVecchiaPassword(String vecchiaPassword) {
-		this.vecchiaPassword = vecchiaPassword;
 	}
 
 	public String getUsername() {

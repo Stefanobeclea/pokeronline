@@ -55,7 +55,7 @@ public class Utente {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "tavolo_id")
-	private Utente tavolo;
+	private Tavolo tavolo;
 
 	public Utente() {
 	}
@@ -110,11 +110,11 @@ public class Utente {
 		this.tavoliCreati = tavoliCreati;
 	}
 
-	public Utente getTavolo() {
+	public Tavolo getTavolo() {
 		return tavolo;
 	}
 
-	public void setTavolo(Utente tavolo) {
+	public void setTavolo(Tavolo tavolo) {
 		this.tavolo = tavolo;
 	}
 
