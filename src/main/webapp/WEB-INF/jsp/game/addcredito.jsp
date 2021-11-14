@@ -59,7 +59,7 @@
 									<input class="btn btn-outline-warning" type="reset" value="Ripulisci">
 								</div>
 		
-						</form:form>
+							</form:form>
   
 				    
 				    
