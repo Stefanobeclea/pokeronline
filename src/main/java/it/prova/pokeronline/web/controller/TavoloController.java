@@ -50,7 +50,7 @@ public class TavoloController {
 		Utente utenteInSessione = (Utente)request.getSession().getAttribute("userInfo");
 		tavoloExample.setUtenteCreazione(UtenteDTO
 				.buildUtenteDTOFromModel(utenteService.caricaSingoloUtente(utenteInSessione.getId())));
-		List<Tavolo> utenti = tavoloService.findByExample(tavoloExample.buildTavoloModel(), utenteInSessione);
+		List<Tavolo> utenti = tavoloService.findByExample(tavoloExample.buildTavoloModel());
 		model.addAttribute("tavolo_list_attribute", utenti);
 		return "tavolo/list";
 	}
