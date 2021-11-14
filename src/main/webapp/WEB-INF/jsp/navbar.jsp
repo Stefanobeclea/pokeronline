@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <header>
   <!-- Fixed navbar -->
  <nav class="navbar navbar-expand-lg navbar-dark bg-primary" aria-label="Eighth navbar example">
@@ -25,21 +26,23 @@
               <li><a class="dropdown-item" href="${pageContext.request.contextPath}/tavolo/search">Ricerca Tavoli</a></li>
             </ul> 
           </li>
-          <c:if test="${userInfo.isAdmin() }">
--	      <li class="nav-item dropdown">
--	        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Gestione Utenze</a>
--	        <div class="dropdown-menu" aria-labelledby="dropdown01">
--	          <a class="dropdown-item" href="${pageContext.request.contextPath}/utente/PrepareSearchUtenteServlet">Ricerca Utenti</a>
--	          <a class="dropdown-item" href="${pageContext.request.contextPath}/utente/PrepareInsertUtenteServlet">Inserisci Utente</a>
--	        </div>
--	      </li>
--	   </c:if>   
+          <sec:authorize access="hasRole('ADMIN')">
+		      <li class="nav-item dropdown">
+		        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Gestione Utenze</a>
+		        <div class="dropdown-menu" aria-labelledby="dropdown01">
+		          <a class="dropdown-item" href="${pageContext.request.contextPath}/utente/search">Ricerca Utenti</a>
+		          <a class="dropdown-item" href="${pageContext.request.contextPath}/utente/insert">Inserisci Utente</a>
+		        </div>
+		      </li>
+		   </sec:authorize>
         </ul>
       </div>
-      <div class="col-md-3 text-end">
-        <p class="navbar-text">Utente: ${userInfo.username }(${userInfo.nome } ${userInfo.cognome })
-    	 <a href="${pageContext.request.contextPath}/LogoutServlet">Logout</a></p>
-      </div>
+     <sec:authorize access="isAuthenticated()">
+	      <div class="col-md-3 text-end">
+	        <p class="navbar-text">Utente: <sec:authentication property="name"/> (${userInfo.nome } ${userInfo.cognome })
+	    	 <a href="${pageContext.request.contextPath}/logout">Logout</a></p>
+	      </div>
+      </sec:authorize>
     </div>
   </nav>
 
