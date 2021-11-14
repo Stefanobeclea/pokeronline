@@ -28,9 +28,10 @@ public class CustomAuthenticationSuccessHandlerImpl implements AuthenticationSuc
 		//voglio mettere in sessione uno userInfo perché spring security mette solo un principal da cui attingere username
 		Utente utenteFromDb = utenteRepository.findByUsername(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("Username " + authentication.getName() + " not found"));
 		Utente utenteParziale = new Utente();
-		utenteParziale.setId(utenteFromDb.getId());
 		utenteParziale.setNome(utenteFromDb.getNome());
 		utenteParziale.setCognome(utenteFromDb.getCognome());
+		utenteParziale.setEsperienzaAccumulata(utenteFromDb.getEsperienzaAccumulata());
+		utenteParziale.setCreditoAccumulato(utenteFromDb.getCreditoAccumulato());
 		request.getSession().setAttribute("userInfo", utenteParziale);
 		response.sendRedirect("home");
 

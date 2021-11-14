@@ -20,12 +20,22 @@
             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdown07" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown07" data-bs-toggle="dropdown" aria-expanded="false">Menù</a>
             <ul class="dropdown-menu" aria-labelledby="dropdown07">
               <li><a class="dropdown-item" href="${pageContext.request.contextPath}/home">Home</a></li>
-              <li><a class="dropdown-item" href="${pageContext.request.contextPath}/tavolo/search">Ricerca Tavoli</a></li>
+              <li><a class="dropdown-item" href="${pageContext.request.contextPath}/game/search">Ricerca Tavoli</a></li>
+              <li><a class="dropdown-item" href="${pageContext.request.contextPath}/game/ricarica">Ricarica Credito</a></li>
             </ul> 
           </li>
+          <sec:authorize access="hasRole( 'ROLE_SPECIAL_PLAYER')">
+		      <li class="nav-item dropdown">
+		        <a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Gestione Tavoli</a>
+		        <div class="dropdown-menu" aria-labelledby="dropdown02">
+		          <a class="dropdown-item" href="${pageContext.request.contextPath}/tavolo/search">Ricerca Tavoli Creati</a>
+		          <a class="dropdown-item" href="${pageContext.request.contextPath}/tavolo/insert">Inserisci Tavolo</a>
+		        </div>
+		      </li>
+		   </sec:authorize>
           <sec:authorize access="hasRole('ADMIN')">
 		      <li class="nav-item dropdown">
 		        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Gestione Utenze</a>
@@ -39,10 +49,12 @@
       </div>
      <sec:authorize access="isAuthenticated()">
       		<div class="nav-item dropdown">
-		        <a class="nav-link dropdown-toggle" style="color: white!important" href="#" id="dropdown07" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><sec:authentication property="name"/> (${userInfo.nome } ${userInfo.cognome })</a>
+		        <a class="nav-link dropdown-toggle" style="color: white!important" href="#" id="dropdown07" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><b><sec:authentication property="name"/></b> | Punti Esperienza: ${userInfo.esperienzaAccumulata }</a>
 		        <div class="dropdown-menu" aria-labelledby="dropdown07">
+		          <a class="dropdown-item" href="#">${userInfo.nome } ${userInfo.cognome }</a>
+		          <a class="dropdown-item" href="${pageContext.request.contextPath}/game/ricarica">Credito Residuo ${userInfo.creditoAccumulato } $</a>
 		          <a class="dropdown-item" href="${pageContext.request.contextPath}/utente/formreset">Resetta Password</a>
-		          <a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Logout</a>
+		          <a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Esci</a>
 		        </div>
 		      </div>
 	 </sec:authorize>
