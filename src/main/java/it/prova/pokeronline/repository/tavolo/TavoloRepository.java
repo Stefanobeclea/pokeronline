@@ -9,7 +9,7 @@ import it.prova.pokeronline.model.Tavolo;
 
 
 public interface TavoloRepository extends CrudRepository<Tavolo, Long>, CustomTavoloRepository{
-	@Query("from Tavolo t join fetch t.utenteCreazione join fetch t.utenti where t.id = ?1")
+	@Query("from Tavolo t join fetch t.utenteCreazione where t.id = ?1")
 	Tavolo findSingleTavoloEager(Long id);
 	
 	@Query("from Tavolo t join fetch t.utenteCreazione u where u.id = ?1")
