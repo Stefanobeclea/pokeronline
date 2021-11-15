@@ -39,7 +39,6 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
          .antMatchers("/login").permitAll()
          .antMatchers("/utente/**").hasRole("ADMIN")
          .antMatchers("/tavolo/**").hasAnyRole("ADMIN", "ROLE_SPECIAL_PLAYER")
-         .antMatchers("/game/**").hasAnyRole("ADMIN", "ROLE_SPECIAL_PLAYER", "ROLE_PLAYER")
          //.antMatchers("/anonymous*").anonymous()
          .anyRequest().authenticated()
          .and().exceptionHandling().accessDeniedPage("/accessDenied")

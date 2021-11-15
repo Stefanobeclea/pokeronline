@@ -55,9 +55,9 @@ public class TavoloController {
 	@PostMapping("/list")
 	public String listTavoli(TavoloDTO tavoloExample, ModelMap model, HttpServletRequest request) {
 		Utente utenteInSessione = (Utente)request.getSession().getAttribute("userInfo");
-		tavoloExample.setUtenteCreazione(UtenteDTO
-				.buildUtenteDTOFromModel(utenteService.caricaSingoloUtente(utenteInSessione.getId())));
-		List<Tavolo> utenti = tavoloService.findByExample(tavoloExample.buildTavoloModel());
+		Tavolo tavoloexample = tavoloExample.buildTavoloModel();
+		tavoloexample.setUtenteCreazione(utenteService.caricaSingoloUtente(utenteInSessione.getId()));
+		List<Tavolo> utenti = tavoloService.findByExample(tavoloexample);
 		model.addAttribute("tavolo_list_attribute", utenti);
 		return "tavolo/list";
 	}

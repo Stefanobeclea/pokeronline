@@ -134,4 +134,9 @@ public class UtenteServiceImpl implements UtenteService {
 		utenteReloaded.setCreditoAccumulato(utenteInstance.getCreditoAccumulato() + creditoDaAggiungere);
 		repository.save(utenteReloaded);
 	}
+	
+	@Transactional(readOnly = true)
+	public List<Utente> cercaByCognomeENomeILike(String term) {
+		return repository.findByCognomeIgnoreCaseContainingOrNomeIgnoreCaseContainingOrderByNomeAsc(term, term);
+	}
 }

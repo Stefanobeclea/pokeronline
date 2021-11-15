@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -18,8 +19,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import it.prova.pokeronline.dto.RuoloDTO;
 import it.prova.pokeronline.dto.UtenteDTO;
@@ -157,19 +163,31 @@ public class UtenteController {
 		
 		//CARICO L'UTENTE IN SESSIONE PER CONFRONTARE LE DUE PASSWORD, QUELLA IN DB CON QUELLA CHE RICEVO DAL CLIENT
 		Utente utenteInSessione = utenteService.findByUsername(username);
-//		if(!utenteService.confrontaPassCodificataConDecodificata(utenteInSessione.getPassword(), request.getParameter("vecchiaPassword"))) {
-//			model.addAttribute("errorMessage", "vecchiaPassword.notfound");
-//			return "utente/formreset";
-//		}
-//		if (!request.getParameter("password").equals(request.getParameter("confermaPassword"))) {
-//			model.addAttribute("errorMessage", "password.diverse");
-//			return "utente/formreset";
-//		}
 		
 		utenteService.resettaUtente(request.getParameter("password"),request.getParameter("confermaPassword"),request.getParameter("vecchiaPassword"), utenteInSessione);
 		
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/logout";
+	}
+	
+	@GetMapping(value = "/searchUtenteAjax", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public @ResponseBody String searchUtente(@RequestParam String term) {
+
+		List<Utente> listaUtenteByTerm = utenteService.cercaByCognomeENomeILike(term);
+		return buildJsonResponse(listaUtenteByTerm);
+	}
+
+	private String buildJsonResponse(List<Utente> listaRegisti) {
+		JsonArray ja = new JsonArray();
+
+		for (Utente utenteItem : listaRegisti) {
+			JsonObject jo = new JsonObject();
+			jo.addProperty("value", utenteItem.getId());
+			jo.addProperty("label", utenteItem.getNome() + " " + utenteItem.getCognome());
+			ja.add(jo);
+		}
+
+		return new Gson().toJson(ja);
 	}
 	
 

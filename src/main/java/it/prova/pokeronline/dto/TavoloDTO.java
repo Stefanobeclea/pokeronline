@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import it.prova.pokeronline.model.Tavolo;
-import it.prova.pokeronline.model.Utente;
 
 
 
@@ -34,9 +33,11 @@ public class TavoloDTO {
 	@Min(1)
 	private Integer creditoMinimo;
 	
-	private Set<Utente> utenti = new HashSet<>(0);
+	private Set<UtenteDTO> utenti = new HashSet<>(0);
 
 	private UtenteDTO utenteCreazione;
+	
+	private UtenteDTO utenteGiocatore;
 	
 	public TavoloDTO() {
 		// TODO Auto-generated constructor stub
@@ -72,6 +73,14 @@ public class TavoloDTO {
 		return denominazione;
 	}
 
+	public UtenteDTO getUtenteGiocatore() {
+		return utenteGiocatore;
+	}
+
+	public void setUtenteGiocatore(UtenteDTO utenteGiocatore) {
+		this.utenteGiocatore = utenteGiocatore;
+	}
+
 	public void setDenominazione(String denominazione) {
 		this.denominazione = denominazione;
 	}
@@ -100,11 +109,11 @@ public class TavoloDTO {
 		this.creditoMinimo = creditoMinimo;
 	}
 
-	public Set<Utente> getUtenti() {
+	public Set<UtenteDTO> getUtenti() {
 		return utenti;
 	}
 
-	public void setUtenti(Set<Utente> utenti) {
+	public void setUtenti(Set<UtenteDTO> utenti) {
 		this.utenti = utenti;
 	}
 
@@ -117,7 +126,7 @@ public class TavoloDTO {
 	}
 	
 	public Tavolo buildTavoloModel() {
-		return new Tavolo(this.id, this.denominazione, this.dateCreated, this.esperienzaMinima, this.creditoMinimo, this.utenteCreazione.buildUtenteModel(false));
+		return new Tavolo(this.id, this.denominazione, this.dateCreated, this.esperienzaMinima, this.creditoMinimo);
 	}
 
 	public static TavoloDTO buildTavoloDTOFromModel(Tavolo tavoloModel, boolean includeUtente) {

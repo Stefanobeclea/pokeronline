@@ -34,4 +34,7 @@ public interface UtenteService {
 	
 	public void addCredito(Utente utenteInstance, int creditoDaAggiungere);
 	
+	public List<Utente> cercaByCognomeENomeILike(String term);
+
+	
 }

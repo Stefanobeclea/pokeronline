@@ -56,4 +56,10 @@ public class TavoloServiceImpl implements TavoloService{
 		
 		return repository.findByExample(example);
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Tavolo> findByExampleEager(Tavolo example) {
+		return repository.findByExampleEager(example);
+	}
 }
