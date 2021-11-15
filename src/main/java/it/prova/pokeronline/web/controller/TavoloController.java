@@ -105,4 +105,26 @@ public class TavoloController {
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/tavolo";
 	}
+	
+	@GetMapping("/modifica/{idTavolo}")
+	public String modifica(@PathVariable(required = true) Long idTavolo, Model model) {
+		model.addAttribute("edit_tavolo_attr", TavoloDTO.buildTavoloDTOFromModel(tavoloService.caricaSingoloElemento(idTavolo), true));
+		return "tavolo/edit";
+	}
+	
+	@PostMapping("/edit")
+	public String edit(@Valid @ModelAttribute("edit_tavolo_attr") TavoloDTO tavoloDTO, BindingResult result,
+			RedirectAttributes redirectAttrs, HttpServletRequest request) {
+		Utente utenteInSessione = (Utente)request.getSession().getAttribute("userInfo");
+		Tavolo tavoloDaAggiornare = tavoloService.caricaSingoloElemento(tavoloDTO.getId());
+		tavoloDTO.setUtenteCreazione(UtenteDTO
+				.buildUtenteDTOFromModel(utenteService.caricaSingoloUtente(utenteInSessione.getId())));
+		tavoloDTO.setDateCreated(tavoloDaAggiornare.getDateCreated());
+		if (result.hasErrors()) {
+			return "tavolo/edit";
+		}		
+		tavoloService.aggiorna(tavoloDTO.buildTavoloModel());		
+		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
+		return "redirect:/tavolo";
+	}
 }
