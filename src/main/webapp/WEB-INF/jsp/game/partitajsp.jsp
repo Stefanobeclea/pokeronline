@@ -60,12 +60,16 @@
 			    </div>
 			    
 			    <div class='card-footer'>
+					<div>
 					<form action="${pageContext.request.contextPath}/game/partita/${show_tavolo_attr.id}" method="post">
 						  <button type="submit" name="submit" id="submit" class="btn btn-primary">Gioca</button>
 				    </form>
+				    </div>
+				    <div>
 				 	<form action="${pageContext.request.contextPath}/game/exit/${show_tavolo_attr.id}" method="post">
 						  <button type="submit" name="submit" id="submit" class="btn btn-dark">Esci</button>
 					</form>
+					</div>
 				</div>
 			<!-- end card -->
 			</div>	

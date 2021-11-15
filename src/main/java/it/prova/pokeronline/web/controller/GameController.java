@@ -52,7 +52,7 @@ public class GameController {
 		ModelAndView mv = new ModelAndView();
 		List<Tavolo> tavoli = tavoloService.listAllElements();
 		mv.addObject("tavolo_list_attribute", tavoli);
-		mv.setViewName("tavolo/list");
+		mv.setViewName("game/list");
 		return mv;
 	}
 
@@ -89,7 +89,9 @@ public class GameController {
 		Utente utenteInSessione = (Utente)request.getSession().getAttribute("userInfo");
 		utenteInSessione = utenteService.caricaSingoloUtente(utenteInSessione.getId());
 		Tavolo tavoloPerGiocare = tavoloService.caricaSingoloElementoEager(idTavolo);
-		if(utenteInSessione.getTavolo() != tavoloPerGiocare) {
+		
+		model.addAttribute("show_tavolo_attr", tavoloPerGiocare);
+		if(utenteInSessione.getTavolo() != tavoloPerGiocare && utenteInSessione.getTavolo() != null) {
 			model.addAttribute("errorMessage", "Sei già presente in una partita.");
 			return "game/gioca";
 		}
@@ -102,7 +104,6 @@ public class GameController {
 			return "game/gioca";
 		}
 		
-		model.addAttribute("show_tavolo_attr", tavoloPerGiocare);
 		model.addAttribute("successMessage", "Sei In Partita, gioca e tenta la fortuna!");
 		return "game/partitajsp";
 	}
@@ -125,6 +126,23 @@ public class GameController {
 		model.addAttribute("show_tavolo_attr", tavoloPerGiocare);
 		model.addAttribute("successMessage", "Hai Vinto!");
 		return "game/partitajsp";
+	}
+	
+	@PostMapping("/exit/{idTavolo}")
+	public String exitPartita(@PathVariable(required = true) Long idTavolo, Model model,
+			RedirectAttributes redirectAttrs, HttpServletRequest request) {
+		Utente utenteInSessione = (Utente)request.getSession().getAttribute("userInfo");
+		utenteInSessione = utenteService.caricaSingoloUtente(utenteInSessione.getId());
+		Tavolo tavoloPerGiocare = tavoloService.caricaSingoloElementoEager(idTavolo);
+		
+		utenteInSessione.setTavolo(null);
+		utenteService.aggiorna(utenteInSessione);
+		
+		tavoloPerGiocare.getUtenti().remove(utenteInSessione);
+		tavoloService.aggiorna(tavoloPerGiocare);
+		
+		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
+		return "redirect:/game";
 	}
 	
 }
