@@ -90,4 +90,19 @@ public class TavoloController {
 		model.addAttribute("show_tavolo_attr", tavoloService.caricaSingoloElementoEager(idTavolo));
 		return "tavolo/show";
 	}
+	
+	@GetMapping("/rimuovi/{idTavolo}")
+	public String infodelete(@PathVariable(required = true) Long idTavolo, Model model) {
+		model.addAttribute("show_tavolo_attr", tavoloService.caricaSingoloElementoEager(idTavolo));
+		return "tavolo/delete";
+	}
+	
+	@PostMapping("/delete/{idTavolo}")
+	public String delete(@PathVariable(required = true) Long idTavolo, Model model, RedirectAttributes redirectAttrs) {
+		Tavolo tavoloDaRimuovere = tavoloService.caricaSingoloElemento(idTavolo);
+		System.out.println("Qua Ci Arriva"+tavoloDaRimuovere.getDenominazione());
+		tavoloService.rimuovi(tavoloDaRimuovere);		
+		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
+		return "redirect:/tavolo";
+	}
 }
