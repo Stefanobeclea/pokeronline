@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -82,5 +83,11 @@ public class TavoloController {
 		
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/tavolo";
+	}
+	
+	@GetMapping("/show/{idTavolo}")
+	public String show(@PathVariable(required = true) Long idTavolo, Model model) {
+		model.addAttribute("show_tavolo_attr", tavoloService.caricaSingoloElementoEager(idTavolo));
+		return "tavolo/show";
 	}
 }

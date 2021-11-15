@@ -30,12 +30,12 @@ public class CustomTavoloRepositoryImpl implements CustomTavoloRepository{
 			paramaterMap.put("denominazione", "%" + example.getDenominazione() + "%");
 		}
 		if (example.getEsperienzaMinima() > 0) {
-			whereClauses.add(" t.esperienzaMinima like :esperienzaMinima ");
-			paramaterMap.put("esperienzaMinima", "%" + example.getEsperienzaMinima() + "%");
+			whereClauses.add(" t.esperienzaMinima >= :esperienzaMinima ");
+			paramaterMap.put("esperienzaMinima",example.getEsperienzaMinima());
 		}
 		if (example.getCreditoMinimo() > 0) {
-			whereClauses.add(" t.creditoMinimo like :creditoMinimo ");
-			paramaterMap.put("creditoMinimo", "%" + example.getCreditoMinimo() + "%");
+			whereClauses.add(" t.creditoMinimo >= :creditoMinimo ");
+			paramaterMap.put("creditoMinimo",  example.getCreditoMinimo());
 		}
 		if (example.getDateCreated() != null) {
 			whereClauses.add("t.dateCreated >= :dateCreated ");
