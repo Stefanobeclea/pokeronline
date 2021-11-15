@@ -10,9 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.prova.pokeronline.dto.TavoloDTO;
 import it.prova.pokeronline.dto.UtenteDTO;
@@ -75,5 +77,54 @@ public class GameController {
 		return "game/list";
 	}
 	
+	@GetMapping("/gioca/{idTavolo}")
+	public String showTavoloGiocato(@PathVariable(required = true) Long idTavolo, Model model) {
+		model.addAttribute("show_tavolo_attr", tavoloService.caricaSingoloElementoEager(idTavolo));
+		return "game/gioca";
+	}
+	
+	@PostMapping("/giocata/{idTavolo}")
+	public String giocata(@PathVariable(required = true) Long idTavolo, Model model,
+			 HttpServletRequest request) {
+		Utente utenteInSessione = (Utente)request.getSession().getAttribute("userInfo");
+		utenteInSessione = utenteService.caricaSingoloUtente(utenteInSessione.getId());
+		Tavolo tavoloPerGiocare = tavoloService.caricaSingoloElementoEager(idTavolo);
+		if(utenteInSessione.getTavolo() != tavoloPerGiocare) {
+			model.addAttribute("errorMessage", "Sei già presente in una partita.");
+			return "game/gioca";
+		}
+		if(utenteInSessione.getCreditoAccumulato() < tavoloPerGiocare.getCreditoMinimo()) {
+			model.addAttribute("errorMessage", "Credito insufficiente per giocare.");
+			return "game/gioca";
+		}
+		if(utenteInSessione.getEsperienzaAccumulata() < tavoloPerGiocare.getEsperienzaMinima()) {
+			model.addAttribute("errorMessage", "Esperienza insufficiente per giocare.");
+			return "game/gioca";
+		}
+		
+		model.addAttribute("show_tavolo_attr", tavoloPerGiocare);
+		model.addAttribute("successMessage", "Sei In Partita, gioca e tenta la fortuna!");
+		return "game/partitajsp";
+	}
+	
+	@PostMapping("/partita/{idTavolo}")
+	public String partita(@PathVariable(required = true) Long idTavolo, Model model,
+			 HttpServletRequest request) {
+		Utente utenteInSessione = (Utente)request.getSession().getAttribute("userInfo");
+		utenteInSessione = utenteService.caricaSingoloUtente(utenteInSessione.getId());
+		Tavolo tavoloPerGiocare = tavoloService.caricaSingoloElementoEager(idTavolo);
+		
+		utenteInSessione.setEsperienzaAccumulata(utenteInSessione.getEsperienzaAccumulata()+1);
+		utenteInSessione.setCreditoAccumulato(utenteInSessione.getCreditoAccumulato()+10);
+		utenteInSessione.setTavolo(tavoloPerGiocare);
+		utenteService.aggiorna(utenteInSessione);
+		System.out.println("arrivo qui");
+		tavoloPerGiocare.getUtenti().add(utenteInSessione);
+		tavoloService.aggiorna(tavoloPerGiocare);
+		
+		model.addAttribute("show_tavolo_attr", tavoloPerGiocare);
+		model.addAttribute("successMessage", "Hai Vinto!");
+		return "game/partitajsp";
+	}
 	
 }

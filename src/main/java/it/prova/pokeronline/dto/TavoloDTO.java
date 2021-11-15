@@ -26,11 +26,11 @@ public class TavoloDTO {
 	private Date dateCreated;
 	
 	@NotNull(message = "{esperienzaMinima.notnull}")
-	@Min(1)
+	@Min(0)
 	private Integer esperienzaMinima;
 	
 	@NotNull(message = "{creditoMinimo.notnull}")
-	@Min(1)
+	@Min(0)
 	private Integer creditoMinimo;
 	
 	private Set<UtenteDTO> utenti = new HashSet<>(0);

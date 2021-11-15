@@ -1,6 +1,6 @@
 package it.prova.pokeronline.web.controller;
 
-import java.util.Date;
+import java.util.Date; 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.prova.pokeronline.dto.TavoloDTO;
-import it.prova.pokeronline.dto.UtenteDTO;
 import it.prova.pokeronline.model.Tavolo;
 import it.prova.pokeronline.model.Utente;
 import it.prova.pokeronline.service.TavoloService;
@@ -72,14 +71,14 @@ public class TavoloController {
 	public String saveTavolo(@Valid @ModelAttribute("insert_tavolo_attr") TavoloDTO tavoloDTO, BindingResult result,
 			RedirectAttributes redirectAttrs, HttpServletRequest request) {
 		Utente utenteInSessione = (Utente)request.getSession().getAttribute("userInfo");
-		tavoloDTO.setUtenteCreazione(UtenteDTO
-				.buildUtenteDTOFromModel(utenteService.caricaSingoloUtente(utenteInSessione.getId())));
-		tavoloDTO.setDateCreated(new Date());
+		Tavolo tavoloexample = tavoloDTO.buildTavoloModel();
+		tavoloexample.setUtenteCreazione((utenteService.caricaSingoloUtente(utenteInSessione.getId())));
+		tavoloexample.setDateCreated(new Date());
 		if (result.hasErrors()) {
 			return "tavolo/insert";
 		}
 		
-		tavoloService.inserisciNuovo(tavoloDTO.buildTavoloModel());
+		tavoloService.inserisciNuovo(tavoloexample);
 		
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/tavolo";
@@ -116,14 +115,14 @@ public class TavoloController {
 	public String edit(@Valid @ModelAttribute("edit_tavolo_attr") TavoloDTO tavoloDTO, BindingResult result,
 			RedirectAttributes redirectAttrs, HttpServletRequest request) {
 		Utente utenteInSessione = (Utente)request.getSession().getAttribute("userInfo");
+		Tavolo tavoloexample = tavoloDTO.buildTavoloModel();
 		Tavolo tavoloDaAggiornare = tavoloService.caricaSingoloElemento(tavoloDTO.getId());
-		tavoloDTO.setUtenteCreazione(UtenteDTO
-				.buildUtenteDTOFromModel(utenteService.caricaSingoloUtente(utenteInSessione.getId())));
-		tavoloDTO.setDateCreated(tavoloDaAggiornare.getDateCreated());
+		tavoloexample.setUtenteCreazione(utenteService.caricaSingoloUtente(utenteInSessione.getId()));
+		tavoloexample.setDateCreated(tavoloDaAggiornare.getDateCreated());
 		if (result.hasErrors()) {
 			return "tavolo/edit";
 		}		
-		tavoloService.aggiorna(tavoloDTO.buildTavoloModel());		
+		tavoloService.aggiorna(tavoloexample);		
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/tavolo";
 	}

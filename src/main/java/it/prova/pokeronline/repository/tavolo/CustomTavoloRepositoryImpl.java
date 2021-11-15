@@ -86,6 +86,17 @@ public class CustomTavoloRepositoryImpl implements CustomTavoloRepository{
 //			whereClauses.add("u in :listaUtenti ");
 //			paramaterMap.put("listaUtenti", example.getUtenti());
 //		}
+//		if(example.getUtenti() != null && example.getUtenti().size() > 0) {
+//			int i = 0;
+//			for (Utente giocatoreTmp : example.getUtenti()) {
+//				if(i == 0)
+//					giocatore += " g.id = " + giocatoreTmp.getId();
+//				else
+//					giocatore += " or g.id = " + giocatoreTmp.getId();
+//				
+//				i++;
+//			}
+//		}
 		queryBuilder.append(!whereClauses.isEmpty()?" and ":"");
 		queryBuilder.append(StringUtils.join(whereClauses, " and "));
 		TypedQuery<Tavolo> typedQuery = entityManager.createQuery(queryBuilder.toString(), Tavolo.class);
