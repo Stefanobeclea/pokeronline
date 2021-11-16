@@ -1,10 +1,23 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <!doctype html>
 <html lang="it" class="h-100" >
 	 <head>
 	 
 	 	<!-- Common imports in pages -->
 	 	<jsp:include page="../header.jsp" />
+	 	<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/jqueryUI/jquery-ui.min.css" />
+		<style>
+			.ui-autocomplete-loading {
+				background: white url("../assets/img/jqueryUI/anim_16x16.gif") right center no-repeat;
+			}
+			.error_field {
+		        color: red; 
+		    }
+		</style>
 	   
 	   <title>Ricerca</title>
 	 </head>
@@ -70,11 +83,11 @@
 		
 						</form>
   	
-  						<script>
+  								<script>
 									$("#utenteSearchInput").autocomplete({
 										 source: function(request, response) {
 										        $.ajax({
-										            url: "../utente/searchUtenteAjax",
+										            url: "${pageContext.request.contextPath}/utente/searchUtenteAjax",
 										            datatype: "json",
 										            data: {
 										                term: request.term,   
@@ -95,7 +108,6 @@
 									        return false
 									    },
 									    minLength: 2,
-									    //quando seleziono la voce nel campo hidden deve valorizzarsi l'id
 									    select: function( event, ui ) {
 									    	$('#utenteId').val(ui.item.value);
 									    	//console.log($('#utenteId').val())

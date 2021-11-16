@@ -40,6 +40,7 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
          .antMatchers("/signup/**").permitAll() 
          .antMatchers("/utente/formreset").authenticated()
          .antMatchers("/utente/resetpw").authenticated()
+         .antMatchers("/utente/searchUtenteAjax").authenticated()
          .antMatchers("/utente/**").hasRole("ADMIN")
          .antMatchers("/tavolo/**").hasAnyRole("ADMIN", "SPECIAL_PLAYER")
          //.antMatchers("/anonymous*").anonymous()

@@ -4,6 +4,15 @@
 	 
 	 	<!-- Common imports in pages -->
 	 	<jsp:include page="../header.jsp" />
+	 	<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/jqueryUI/jquery-ui.min.css" />
+		<style>
+			.ui-autocomplete-loading {
+				background: white url("../assets/img/jqueryUI/anim_16x16.gif") right center no-repeat;
+			}
+			.error_field {
+		        color: red; 
+		    }
+		</style>
 	   
 	   <title>Ricerca</title>
 	 </head>
