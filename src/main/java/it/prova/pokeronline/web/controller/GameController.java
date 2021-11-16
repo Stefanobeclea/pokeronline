@@ -144,4 +144,21 @@ public class GameController {
 		return "redirect:/game";
 	}
 	
+	@GetMapping("/mylastgame")
+	public String goToMyLastGame(Model model, HttpServletRequest request) {
+		Utente utenteInSessione = (Utente)request.getSession().getAttribute("userInfo");
+		utenteInSessione = utenteService.caricaSingoloUtente(utenteInSessione.getId());
+		
+		if(utenteInSessione.getTavolo() == null) {
+			model.addAttribute("errorMessage", "Non sei presente in nessun tavolo.");
+			return "index";
+		}
+		
+		Tavolo tavoloPerGiocare = tavoloService.caricaSingoloElementoEager(utenteInSessione.getTavolo().getId());
+		
+		model.addAttribute("show_tavolo_attr", tavoloPerGiocare);
+		model.addAttribute("successMessage", "Sei In Partita, gioca e tenta la fortuna!");
+		return "game/partitajsp";
+	}
+	
 }

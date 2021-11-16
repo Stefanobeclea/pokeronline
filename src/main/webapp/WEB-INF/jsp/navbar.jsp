@@ -27,7 +27,7 @@
               <li><a class="dropdown-item" href="${pageContext.request.contextPath}/game/ricarica">Ricarica Credito</a></li>
             </ul> 
           </li>
-          <sec:authorize access="hasRole( 'ROLE_SPECIAL_PLAYER')">
+          <sec:authorize access="hasRole( 'ROLE_SPECIAL_PLAYER') || hasRole( 'ADMIN')">
 		      <li class="nav-item dropdown">
 		        <a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Gestione Tavoli</a>
 		        <div class="dropdown-menu" aria-labelledby="dropdown02">
