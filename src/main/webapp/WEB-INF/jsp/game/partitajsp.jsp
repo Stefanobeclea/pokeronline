@@ -1,4 +1,5 @@
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!doctype html>
 <html lang="it" class="h-100">
 <head>
@@ -52,24 +53,36 @@
 			    	</dl>
 			    	
 			    	<!-- info Utente -->
-			    	
+			    	<dl class="row">
+			    	<dt class="col-sm-3 text-right">Giocatori Al Tavolo:</dt>
+			    	<dd class="col-sm-9">
+			    	<c:if test="${empty show_tavolo_attr.utenti }">
+			    		<td>Non ci sono giocatori al tavolo<br></td>
+			    	</c:if>
+			    	<c:forEach items="${show_tavolo_attr.utenti }" var="giocatoriItem">
+							<td>${giocatoriItem.username}<br></td>
+					</c:forEach>
+					
+					</dd>
+			    	</dl>
 					<!-- end info Utente -->
 					</div>
 			    	
 			    <!-- end card body -->
 			    </div>
 			    
-			    <div class='card-footer'>
-					<div>
+			    <div class='card-footer' style="display: -webkit-inline-box">
 					<form action="${pageContext.request.contextPath}/game/partita/${show_tavolo_attr.id}" method="post">
 						  <button type="submit" name="submit" id="submit" class="btn btn-primary">Gioca</button>
 				    </form>
-				    </div>
-				    <div>
+				    &nbsp;&nbsp;
 				 	<form action="${pageContext.request.contextPath}/game/exit/${show_tavolo_attr.id}" method="post">
 						  <button type="submit" name="submit" id="submit" class="btn btn-dark">Esci</button>
 					</form>
-					</div>
+					 &nbsp;&nbsp;
+					<a href="${pageContext.request.contextPath}/game/gioca/${show_tavolo_attr.id}" class='btn btn-outline-secondary' style='width:80px'>
+						 <i class='fa fa-chevron-left'></i> Back
+					</a>
 				</div>
 			<!-- end card -->
 			</div>	

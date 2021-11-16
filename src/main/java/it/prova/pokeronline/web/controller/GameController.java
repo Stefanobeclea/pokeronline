@@ -115,11 +115,9 @@ public class GameController {
 		utenteInSessione = utenteService.caricaSingoloUtente(utenteInSessione.getId());
 		Tavolo tavoloPerGiocare = tavoloService.caricaSingoloElementoEager(idTavolo);
 		
-		utenteInSessione.setEsperienzaAccumulata(utenteInSessione.getEsperienzaAccumulata()+1);
 		utenteInSessione.setCreditoAccumulato(utenteInSessione.getCreditoAccumulato()+10);
 		utenteInSessione.setTavolo(tavoloPerGiocare);
 		utenteService.aggiorna(utenteInSessione);
-		System.out.println("arrivo qui");
 		tavoloPerGiocare.getUtenti().add(utenteInSessione);
 		tavoloService.aggiorna(tavoloPerGiocare);
 		
@@ -136,12 +134,13 @@ public class GameController {
 		Tavolo tavoloPerGiocare = tavoloService.caricaSingoloElementoEager(idTavolo);
 		
 		utenteInSessione.setTavolo(null);
+		utenteInSessione.setEsperienzaAccumulata(utenteInSessione.getEsperienzaAccumulata()+1);
 		utenteService.aggiorna(utenteInSessione);
 		
 		tavoloPerGiocare.getUtenti().remove(utenteInSessione);
 		tavoloService.aggiorna(tavoloPerGiocare);
 		
-		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
+		redirectAttrs.addFlashAttribute("successMessage", "Sei Uscito Dalla Partita");
 		return "redirect:/game";
 	}
 	

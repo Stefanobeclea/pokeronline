@@ -65,7 +65,7 @@
 											<td>${tavoloItem.esperienzaMinima }</td>
 											<td><fmt:formatDate type = "date" value = "${tavoloItem.dateCreated }" /></td>
 											<td>
-												<a class="btn  btn-sm btn-outline-secondary" href="${pageContext.request.contextPath}/game/gioca/${tavoloItem.id }">Gioca</a>
+												<a class="btn  btn-sm btn-outline-secondary" href="${pageContext.request.contextPath}/game/gioca/${tavoloItem.id }">Entra Al Tavolo</a>
 											</td>
 										</tr>
 									</c:forEach>
