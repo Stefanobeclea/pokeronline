@@ -44,6 +44,10 @@
 			      </label>
 			    </div>
 			    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+			  </form>
+			    <form class="form-signin" action="registrazione" method='POST'>
+			    	<button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
+			    
 			    <p class="mt-5 mb-3 text-muted">&copy; 2020-2021</p>
 			  
 			  

@@ -10,8 +10,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.internal.build.AllowSysOut;
 
 import it.prova.pokeronline.model.Tavolo;
+import it.prova.pokeronline.model.Utente;
 
 public class CustomTavoloRepositoryImpl implements CustomTavoloRepository{
 
@@ -59,8 +61,9 @@ public class CustomTavoloRepositoryImpl implements CustomTavoloRepository{
 	public List<Tavolo> findByExampleEager(Tavolo example) {
 		Map<String, Object> paramaterMap = new HashMap<String, Object>();
 		List<String> whereClauses = new ArrayList<String>();
-
-		StringBuilder queryBuilder = new StringBuilder("select distinct t from Tavolo t join fetch t.utenteCreazione c where t.id = t.id ");
+		String giocatore = "";
+		
+		StringBuilder queryBuilder = new StringBuilder("select distinct t from Tavolo t join fetch t.utenteCreazione c  ");
 
 		if (StringUtils.isNotEmpty(example.getDenominazione())) {
 			whereClauses.add(" t.denominazione  like :denominazione ");
@@ -78,7 +81,8 @@ public class CustomTavoloRepositoryImpl implements CustomTavoloRepository{
 			whereClauses.add("t.dateCreated >= :dateCreated ");
 			paramaterMap.put("dateCreated", example.getDateCreated());
 		}
-		if (example.getUtenteCreazione() != null) {
+		if ( example.getUtenteCreazione().getId() != null &&  example.getUtenteCreazione() != null) {
+			
 			whereClauses.add("c.id = :idUtente ");
 			paramaterMap.put("idUtente", example.getUtenteCreazione().getId());
 		}
@@ -86,19 +90,26 @@ public class CustomTavoloRepositoryImpl implements CustomTavoloRepository{
 //			whereClauses.add("u in :listaUtenti ");
 //			paramaterMap.put("listaUtenti", example.getUtenti());
 //		}
-//		if(example.getUtenti() != null && example.getUtenti().size() > 0) {
-//			int i = 0;
-//			for (Utente giocatoreTmp : example.getUtenti()) {
-//				if(i == 0)
-//					giocatore += " g.id = " + giocatoreTmp.getId();
-//				else
-//					giocatore += " or g.id = " + giocatoreTmp.getId();
-//				
-//				i++;
-//			}
-//		}
+		if(example.getUtenti().size() > 0  && example.getUtenti() != null ) {
+			
+			int i = 0;
+			for (Utente giocatoreTmp : example.getUtenti()) {
+				if(giocatoreTmp.getId() != null) {
+					queryBuilder.append("join fetch t.utenti g ");
+					if(i == 0)
+						 giocatore += " g.id = " + giocatoreTmp.getId();
+					else
+						giocatore += " or g.id = " + giocatoreTmp.getId();
+					
+					i++;
+				}
+				
+			}
+		}
+		queryBuilder.append(" where t.id = t.id");
 		queryBuilder.append(!whereClauses.isEmpty()?" and ":"");
 		queryBuilder.append(StringUtils.join(whereClauses, " and "));
+		System.out.println(queryBuilder);
 		TypedQuery<Tavolo> typedQuery = entityManager.createQuery(queryBuilder.toString(), Tavolo.class);
 
 		for (String key : paramaterMap.keySet()) {

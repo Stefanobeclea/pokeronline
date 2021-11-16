@@ -19,6 +19,9 @@ public class UtenteServiceImpl implements UtenteService {
 	private UtenteRepository repository;
 	
 	@Autowired
+	private RuoloService ruoloService;
+	
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Transactional(readOnly = true)
@@ -138,5 +141,21 @@ public class UtenteServiceImpl implements UtenteService {
 	@Transactional(readOnly = true)
 	public List<Utente> cercaByCognomeENomeILike(String term) {
 		return repository.findByCognomeIgnoreCaseContainingOrNomeIgnoreCaseContainingOrderByNomeAsc(term, term);
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+    public boolean usernameExist(String username) {
+        return repository.findByUsername(username) != null;
+    }
+
+	@Override
+	public void signUp(Utente utenteInstance) {
+		utenteInstance.setStato(StatoUtente.CREATO);
+		utenteInstance.setPassword(passwordEncoder.encode(utenteInstance.getPassword())); 
+		utenteInstance.setDateCreated(new Date());
+		utenteInstance.getRuoli()
+		.add(ruoloService.cercaPerDescrizioneECodice("Classic Player", "ROLE_PLAYER"));
+		repository.save(utenteInstance);  
 	}
 }

@@ -200,4 +200,11 @@ public class UtenteDTO {
 		}).collect(Collectors.toList());
 	}
 
+	@Override
+	public String toString() {
+		return "UtenteDTO [id=" + id + ", username=" + username + ", password=" + password + ", confermaPassword="
+				+ confermaPassword + ", nome=" + nome + ", cognome=" + cognome + ", esperienzaAccumulata="
+				+ esperienzaAccumulata + ", creditoAccumulato=" + creditoAccumulato + ", stato=" + stato + "]";
+	}
+
 }

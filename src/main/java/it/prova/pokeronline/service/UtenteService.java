@@ -35,6 +35,8 @@ public interface UtenteService {
 	public void addCredito(Utente utenteInstance, int creditoDaAggiungere);
 	
 	public List<Utente> cercaByCognomeENomeILike(String term);
-
 	
+	public boolean usernameExist(String username);
+	
+	public void signUp(Utente utenteInstance);
 }

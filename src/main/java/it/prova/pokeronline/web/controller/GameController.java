@@ -64,14 +64,16 @@ public class GameController {
 
 	@PostMapping("/list")
 	public String listTavoli(@ModelAttribute("insert_tavolo_attr") TavoloDTO tavoloExample, ModelMap model) {
+		System.out.println(tavoloExample);
 		if (tavoloExample.getUtenteCreazione().getId() != null) {
 			tavoloExample.setUtenteCreazione(UtenteDTO
 					.buildUtenteDTOFromModel(utenteService.caricaSingoloUtente(tavoloExample.getUtenteCreazione().getId())));
 		}
 		if (!tavoloExample.getUtenti().isEmpty()) {
 			tavoloExample.getUtenti().add(UtenteDTO
-					.buildUtenteDTOFromModel(utenteService.caricaSingoloUtente(tavoloExample.getUtenteCreazione().getId())));
+					.buildUtenteDTOFromModel(utenteService.caricaSingoloUtente(tavoloExample.getUtenteGiocatore().getId())));
 		}
+		System.out.println(tavoloExample);
 		List<Tavolo> tavoli = tavoloService.findByExampleEager(tavoloExample.buildTavoloModel());
 		model.addAttribute("tavolo_list_attribute", TavoloDTO.createTavoloDTOListFromModelList(tavoli, false));
 		return "game/list";

@@ -82,6 +82,18 @@ public class Tavolo {
 		this.creditoMinimo = creditoMinimo;
 	}
 
+	public Tavolo(Long id, String denominazione, Date dateCreated, int esperienzaMinima, int creditoMinimo,
+			Set<Utente> utenti, Utente utenteCreazione) {
+		super();
+		this.id = id;
+		this.denominazione = denominazione;
+		this.dateCreated = dateCreated;
+		this.esperienzaMinima = esperienzaMinima;
+		this.creditoMinimo = creditoMinimo;
+		this.utenti = utenti;
+		this.utenteCreazione = utenteCreazione;
+	}
+
 	public Long getId() {
 		return id;
 	}

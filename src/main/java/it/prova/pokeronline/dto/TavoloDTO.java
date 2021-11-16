@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import it.prova.pokeronline.model.Tavolo;
+import it.prova.pokeronline.model.Utente;
 
 
 
@@ -126,7 +127,10 @@ public class TavoloDTO {
 	}
 	
 	public Tavolo buildTavoloModel() {
-		return new Tavolo(this.id, this.denominazione, this.dateCreated, this.esperienzaMinima, this.creditoMinimo);
+		Set<Utente> giocatori = new HashSet<Utente>();
+		giocatori.add(this.utenteGiocatore.buildUtenteModel(false));
+		return new Tavolo(this.id, this.denominazione, this.dateCreated, this.esperienzaMinima, this.creditoMinimo, 
+				 giocatori, this.utenteCreazione.buildUtenteModel(false));
 	}
 
 	public static TavoloDTO buildTavoloDTOFromModel(Tavolo tavoloModel, boolean includeUtente) {
@@ -143,6 +147,13 @@ public class TavoloDTO {
 		return modelListInput.stream().map(tavoloEntity -> {
 			return TavoloDTO.buildTavoloDTOFromModel(tavoloEntity, includeUtente);
 		}).collect(Collectors.toList());
+	}
+
+	@Override
+	public String toString() {
+		return "TavoloDTO [id=" + id + ", denominazione=" + denominazione + ", esperienzaMinima=" + esperienzaMinima
+				+ ", creditoMinimo=" + creditoMinimo + ", utenti=" + utenti + ", utenteCreazione=" + utenteCreazione
+				+ ", utenteGiocatore=" + utenteGiocatore + "]";
 	}
 	
 	
