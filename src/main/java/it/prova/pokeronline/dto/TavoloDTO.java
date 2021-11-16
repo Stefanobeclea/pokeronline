@@ -127,6 +127,15 @@ public class TavoloDTO {
 	}
 	
 	public Tavolo buildTavoloModel() {
+		return new Tavolo(this.id, this.denominazione, this.dateCreated, this.esperienzaMinima, this.creditoMinimo, 
+				 this.utenteCreazione.buildUtenteModel(false));
+	}
+	
+	public Tavolo buildTavoloModelSenzaUtenteCreatore() {
+		return new Tavolo(this.id, this.denominazione, this.dateCreated, this.esperienzaMinima, this.creditoMinimo);
+	}
+	
+	public Tavolo buildTavoloModelConGiocatori() {
 		Set<Utente> giocatori = new HashSet<Utente>();
 		giocatori.add(this.utenteGiocatore.buildUtenteModel(false));
 		return new Tavolo(this.id, this.denominazione, this.dateCreated, this.esperienzaMinima, this.creditoMinimo, 

@@ -19,6 +19,10 @@
 			   	<div class="alert alert-danger alert-dismissible fade show ${errorMessage==null?'d-none': ''}" role="alert">
 				  ${errorMessage}
 				</div>
+				<div class="alert alert-success alert-dismissible fade show  ${successMessage==null?'d-none':'' }" role="alert">
+			  ${successMessage}
+			  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" ></button>
+			</div>
 				
 				<div class="alert alert-info alert-dismissible fade show ${infoMessage==null?'d-none': ''}" role="alert">
 				  ${infoMessage}
@@ -44,9 +48,8 @@
 			      </label>
 			    </div>
 			    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-			  </form>
-			    <form class="form-signin" action="registrazione" method='POST'>
-			    	<button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
+			  	<br> &nbsp;&nbsp;
+			    <a class="w-100 btn btn-lg btn-outline-primary" type="submit"  href="${pageContext.request.contextPath}/signup">Sign up</a>
 			    
 			    <p class="mt-5 mb-3 text-muted">&copy; 2020-2021</p>
 			  

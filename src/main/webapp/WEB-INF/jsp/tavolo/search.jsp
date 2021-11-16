@@ -1,3 +1,4 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!doctype html>
 <html lang="it" class="h-100" >
 	 <head>
@@ -53,7 +54,14 @@
                         			<input class="form-control" id="dateCreated" type="date" placeholder="dd/MM/yy"
                             			title="formato : gg/mm/aaaa"  name="dateCreated"   >
 								</div>
-								
+								<sec:authorize access="hasRole('ADMIN')">
+								<div class="col-md-6">
+										<label for="utenteSearchInput" class="form-label">Utente Creatore:</label>
+											<input class="form-control ${status.error ? 'is-invalid' : ''}" type="text" id="utenteSearchInput"
+												name="utenteInput" value="${insert_tavolo_attr.utenteCreazione.nome}${empty insert_tavolo_attr.utenteCreazione.nome?'':' '}${insert_tavolo_attr.utenteCreazione.cognome}">
+										<input type="hidden" name="utenteCreazione.id" id="utenteId" value="${insert_tavolo_attr.utenteCreazione.id}">
+								</div>
+								</sec:authorize>
 							<div class="col-12">
 								<button type="submit" name="submit" value="submit" id="submit" class="btn btn-primary">Conferma</button>
 								<a class="btn btn-outline-primary ml-2" href="${pageContext.request.contextPath}/tavolo/insert">Add New</a>
@@ -61,7 +69,40 @@
 							</div>
 		
 						</form>
-  
+  	
+  						<script>
+									$("#utenteSearchInput").autocomplete({
+										 source: function(request, response) {
+										        $.ajax({
+										            url: "../utente/searchUtenteAjax",
+										            datatype: "json",
+										            data: {
+										                term: request.term,   
+										            },
+										            success: function(data) {
+										                response($.map(data, function(item) {
+										                    return {
+											                    label: item.label,
+											                    value: item.value
+										                    }
+										                }))
+										            }
+										        })
+										    },
+										//quando seleziono la voce nel campo deve valorizzarsi la descrizione
+									    focus: function(event, ui) {
+									        $("#utenteSearchInput").val(ui.item.label)
+									        return false
+									    },
+									    minLength: 2,
+									    //quando seleziono la voce nel campo hidden deve valorizzarsi l'id
+									    select: function( event, ui ) {
+									    	$('#utenteId').val(ui.item.value);
+									    	//console.log($('#utenteId').val())
+									        return false;
+									    }
+									});
+								</script>
 				    
 				    
 					<!-- end card-body -->			   

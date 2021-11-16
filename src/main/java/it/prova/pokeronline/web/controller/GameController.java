@@ -74,7 +74,7 @@ public class GameController {
 					.buildUtenteDTOFromModel(utenteService.caricaSingoloUtente(tavoloExample.getUtenteGiocatore().getId())));
 		}
 		System.out.println(tavoloExample);
-		List<Tavolo> tavoli = tavoloService.findByExampleEager(tavoloExample.buildTavoloModel());
+		List<Tavolo> tavoli = tavoloService.findByExampleEager(tavoloExample.buildTavoloModelConGiocatori());
 		model.addAttribute("tavolo_list_attribute", TavoloDTO.createTavoloDTOListFromModelList(tavoli, false));
 		return "game/list";
 	}

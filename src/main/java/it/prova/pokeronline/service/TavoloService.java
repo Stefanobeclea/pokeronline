@@ -23,4 +23,6 @@ public interface TavoloService {
 	
 	public List<Tavolo> findByExampleEager(Tavolo example);
 	
+	public List<Tavolo> findByExampleAdmin(Tavolo example);
+	
 }

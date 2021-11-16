@@ -6,7 +6,7 @@
 	 <head>
 	 
 	 	<!-- Common imports in pages -->
-	 	<jsp:include page="./header.jsp" />
+	 	<jsp:include page="../header.jsp" />
 	 	 <style>
 		    .error_field {
 		        color: red; 
@@ -18,7 +18,7 @@
 	   <body class="d-flex flex-column h-100">
 	   
 	   		<!-- Fixed navbar -->
-	   		<jsp:include page="./navbar.jsp"></jsp:include>
+	   		<jsp:include page="../navbar.jsp"></jsp:include>
 	    
 			
 			<!-- Begin page content -->
@@ -47,7 +47,7 @@
 							<h6 class="card-title">I campi con <span class="text-danger">*</span> sono obbligatori</h6>
 		
 		
-							<form:form modelAttribute="insert_utente_attr" method="post" action="signup" novalidate="novalidate" class="row g-3">
+							<form:form modelAttribute="insert_utente_attr" method="post" action="${pageContext.request.contextPath}/signup/registra" novalidate="novalidate" class="row g-3">
 					
 							
 								<div class="col-md-6">
@@ -88,16 +88,6 @@
 									</spring:bind>
 									<form:errors  path="confermaPassword" cssClass="error_field" />
 								</div>
-								
-								<%-- facendolo con i tag di spring purtroppo viene un po' spaginato, ho preferito a mano. E poi 
-									anche il binding andava gestito diversamente
-								
-								<div class="col-md-6 form-check">
-									<p>Ruoli:</p>
-									<form:checkboxes itemValue="id" itemLabel="codice"  element="div class='form-check'" items="${ruoli_totali_attr}" path="ruoli" cssClass=""/>
-								</div>
-								--%>
-								
 								<div class="col-12">
 									<button type="submit" name="submit" value="submit" id="submit" class="btn btn-primary">Conferma</button>
 									<input class="btn btn-outline-warning" type="reset" value="Ripulisci">
@@ -119,6 +109,6 @@
 			</main>
 			
 			<!-- Footer -->
-			<jsp:include page="./footer.jsp" />
+			<jsp:include page="../footer.jsp" />
 	  </body>
 </html>

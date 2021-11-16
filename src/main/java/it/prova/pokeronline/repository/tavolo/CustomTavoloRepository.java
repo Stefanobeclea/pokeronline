@@ -9,4 +9,6 @@ public interface CustomTavoloRepository {
 	List<Tavolo> findByExample(Tavolo example);
 	
 	List<Tavolo> findByExampleEager(Tavolo example);
+	
+	public List<Tavolo> findByExampleAdmin(Tavolo example);
 }

@@ -10,7 +10,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.internal.build.AllowSysOut;
 
 import it.prova.pokeronline.model.Tavolo;
 import it.prova.pokeronline.model.Utente;
@@ -86,10 +85,6 @@ public class CustomTavoloRepositoryImpl implements CustomTavoloRepository{
 			whereClauses.add("c.id = :idUtente ");
 			paramaterMap.put("idUtente", example.getUtenteCreazione().getId());
 		}
-//		if(example.getUtenti() != null && !example.getUtenti().isEmpty()) {
-//			whereClauses.add("u in :listaUtenti ");
-//			paramaterMap.put("listaUtenti", example.getUtenti());
-//		}
 		if(example.getUtenti().size() > 0  && example.getUtenti() != null ) {
 			
 			int i = 0;
@@ -109,7 +104,6 @@ public class CustomTavoloRepositoryImpl implements CustomTavoloRepository{
 		queryBuilder.append(" where t.id = t.id");
 		queryBuilder.append(!whereClauses.isEmpty()?" and ":"");
 		queryBuilder.append(StringUtils.join(whereClauses, " and "));
-		System.out.println(queryBuilder);
 		TypedQuery<Tavolo> typedQuery = entityManager.createQuery(queryBuilder.toString(), Tavolo.class);
 
 		for (String key : paramaterMap.keySet()) {
@@ -118,5 +112,45 @@ public class CustomTavoloRepositoryImpl implements CustomTavoloRepository{
 
 		return typedQuery.getResultList();
 	}
+	
+	@Override
+	public List<Tavolo> findByExampleAdmin(Tavolo example) {
+		Map<String, Object> paramaterMap = new HashMap<String, Object>();
+		List<String> whereClauses = new ArrayList<String>();
+		
+		StringBuilder queryBuilder = new StringBuilder("select distinct t from Tavolo t join fetch t.utenteCreazione c   ");
+
+		if (StringUtils.isNotEmpty(example.getDenominazione())) {
+			whereClauses.add(" t.denominazione  like :denominazione ");
+			paramaterMap.put("denominazione", "%" + example.getDenominazione() + "%");
+		}
+		if (example.getEsperienzaMinima() > 0) {
+			whereClauses.add(" t.esperienzaMinima >= :esperienzaMinima ");
+			paramaterMap.put("esperienzaMinima",example.getEsperienzaMinima());
+		}
+		if (example.getCreditoMinimo() > 0) {
+			whereClauses.add(" t.creditoMinimo >= :creditoMinimo ");
+			paramaterMap.put("creditoMinimo",  example.getCreditoMinimo());
+		}
+		if (example.getDateCreated() != null) {
+			whereClauses.add("t.dateCreated >= :dateCreated ");
+			paramaterMap.put("dateCreated", example.getDateCreated());
+		}
+		if ( example.getUtenteCreazione() != null) {
+			whereClauses.add("c.id = :idUtente ");
+			paramaterMap.put("idUtente", example.getUtenteCreazione().getId());
+		}
+		queryBuilder.append(" where t.id = t.id");
+		queryBuilder.append(!whereClauses.isEmpty()?" and ":"");
+		queryBuilder.append(StringUtils.join(whereClauses, " and "));
+		TypedQuery<Tavolo> typedQuery = entityManager.createQuery(queryBuilder.toString(), Tavolo.class);
+
+		for (String key : paramaterMap.keySet()) {
+			typedQuery.setParameter(key, paramaterMap.get(key));
+		}
+
+		return typedQuery.getResultList();
+	}
+	
 
 }

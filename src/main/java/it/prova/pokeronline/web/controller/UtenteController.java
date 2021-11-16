@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -188,31 +187,7 @@ public class UtenteController {
 		return new Gson().toJson(ja);
 	}
 	
-	@RequestMapping(value = "/registrazione", method = {RequestMethod.POST,RequestMethod.GET})
-	public String showRegistrationForm( Model model) {
-	    model.addAttribute("insert_utente_attr", new UtenteDTO());
-	    return "signup";
-	}
 	
-	@RequestMapping(value = "/signup", method = {RequestMethod.POST,RequestMethod.GET})
-	public String signup(@Validated({ValidationWithPassword.class,ValidationNoPassword.class}) @ModelAttribute("insert_utente_attr") UtenteDTO utenteDTO, BindingResult result,
-		Model model, RedirectAttributes redirectAttrs) {
-			
-		if (utenteService.usernameExist(utenteDTO.getUsername())) {
-			redirectAttrs.addFlashAttribute("errorMessage", "Account già presente con questo username.");
-			return "redirect:/signup";
-		}
-		if (!result.hasFieldErrors("password") && !utenteDTO.getPassword().equals(utenteDTO.getConfermaPassword()))
-			result.rejectValue("confermaPassword", "password.diverse");
-		if (result.hasErrors()) {
-			return "signup";
-		}
-		utenteService.signUp(utenteDTO.buildUtenteModel(true));
-		
-		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
-		return "redirect:/login";
-
-	}
 	
 
 }
